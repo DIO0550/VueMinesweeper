@@ -1,0 +1,42 @@
+{
+  "private": true,
+  "devDependencies": {
+    "axios": "^0.18.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "bootstrap-vue": "^2.0.0-rc.11",
+    "css-loader": "^0.28.11",
+    "file-loader": "^1.1.11",
+    "font-loader": "^0.1.2",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "iquery": "0.0.2",
+    "jQuery": "^1.7.4",
+    "jquery": "^3.3.1",
+    "node-sass": "^4.9.0",
+    "open-iconic": "^1.1.1",
+    "sass-loader": "^7.0.3",
+    "style-loader": "^0.21.0",
+    "url-loader": "^1.0.1",
+    "vue": "^2.5.16",
+    "vue-cli": "^2.9.6",
+    "vue-hot-reload-api": "^2.3.1",
+    "vue-loader": "^15.2.4",
+    "vue-router": "^3.0.1",
+    "vue-template-compiler": "^2.5.16",
+    "vuex": "^3.0.1",
+    "webpack": "^4.10.2",
+    "webpack-cli": "^3.0.2",
+    "webpack-dev-server": "^3.1.4"
+  },
+  "dependencies": {
+    "bootstrap-sass-loader": "^1.0.10",
+    "vue-style-loader": "^4.1.0"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server",
+    "build": "webpack --watch --config ./configration/webpack.config.js",
+    "start": "webpack-dev-server --open --inline --progress --config ./configration/webpack.config.js --history-api-fallback"
+  }
+}
