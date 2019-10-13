@@ -81,7 +81,7 @@ module.exports = {
   // プラグインを列挙
   plugins: [
     new HtmlWebpackPlugin({
-      template: "../templates/index.html"
+      template: "../src/index.html"
     }),
     new VueLoaderPlugin(),
     new webpack.HotModuleReplacementPlugin()

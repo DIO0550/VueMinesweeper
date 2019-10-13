@@ -1,5 +1,5 @@
 import Title from "../../component/Title.vue";
-import AddressBookCotanctEdit from "../../component/Game.vue";
+import Game from "../../component/Game.vue";
 import VueRouter from "vue-router";
 import Vue from "vue";
 
@@ -9,13 +9,13 @@ const routes = [
     {
         path: "/Game",
         name: "Game",
-        component: AddressBookCotanctEdit,
+        component: Game,
         props: true
     },
     {
         path: "/",
         name: "Title",
-        component: AddressBookContactList,
+        component: Title,
         props: true
     }
 ];
