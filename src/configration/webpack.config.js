@@ -6,11 +6,12 @@ const webpack = require('webpack');
 module.exports = {
   // entry point
   entry: './JavaScript/index.js',
-  // 出力するパスは絶対パスで書きます
+  // 出力するパス
   output: {
     path: `${__dirname}/../dist/`,
     filename: 'build.js'
   },
+  // サーバー
   devServer: {
     contentBase: `/dist/`,
     publicPath: '/',
