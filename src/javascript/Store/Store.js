@@ -1,6 +1,6 @@
 import Vue from "vue"
 import Vuex from "vuex"
-import ContactsStore from "./ContactsStore"
+import ContactsStore from "./contacts_store"
 
 Vue.use(Vuex)
 
