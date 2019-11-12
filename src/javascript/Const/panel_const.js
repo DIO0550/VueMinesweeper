@@ -1,8 +1,8 @@
 
 const panel_const = {
     high_lebel : {
-        column:30,
-        row:30,
+        column:5,
+        row:5,
         bomb_count:20,
     },
     panel_width: 50,

@@ -51,14 +51,14 @@ export default {
          * X座標
          */
         pos_x() {
-            console.log("START pos_x" + this.column);
+            //console.log("START pos_x" + this.column);
             return this.column * PanelConst.panel_width;
         },
         /**
          * Y座標
          */
         pos_y() {
-            console.log("START pos_y" + this.row);
+            //console.log("START pos_y" + this.row);
             return this.row * PanelConst.panel_height;
         }
 
