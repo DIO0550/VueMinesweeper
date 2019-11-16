@@ -1,9 +1,10 @@
 <template>
-    <div class="outer_bounds" v-on:click="click_panel()" v-if="$data.open != true" :style="{top: pos_y + 'px', left: pos_x + 'px'}">
+    <div class="outer_bounds" v-on:click="click_panel" v-if="this.open != true" :style="{top: pos_y + 'px', left: pos_x + 'px'}">
         <div class="inner_bounds">
         </div>
     </div>
-    <div v-else>
+    <div class="back_bounds" v-else :style="{top: pos_y + 'px', left: pos_x + 'px'}">
+        {{ panel_text() }}
     </div>
 </template>
 
@@ -34,6 +35,12 @@ export default {
             type: Boolean,
             default: false,
             required: true
+        },
+        // 周りのボムの数
+        around_bomb_num: {
+            type: Number,
+            default: 0,
+            required: true
         }
     },
     methods: {
@@ -42,8 +49,20 @@ export default {
          */
         click_panel() {
             console.log("START click_panel");
-            this.$data.open = true;
+            this.open = true;
             console.log("END click_panel");
+        },
+        /**
+         * パネルに表示する文字
+         */
+        panel_text() {
+            console.log("START panel_text");
+            if (this.bomb) {
+                console.log("END panel_text");
+                return "💣"
+            }
+            console.log("END panel_text");
+            return this.around_bomb_num;
         }
     },
     computed: {
@@ -51,17 +70,14 @@ export default {
          * X座標
          */
         pos_x() {
-            //console.log("START pos_x" + this.column);
             return this.column * PanelConst.panel_width;
         },
         /**
          * Y座標
          */
         pos_y() {
-            //console.log("START pos_y" + this.row);
             return this.row * PanelConst.panel_height;
         }
-
     }
 }
 </script>
@@ -69,6 +85,9 @@ export default {
 <style lang="scss" scoped>
 @import "../css/PanelStyle.scss";
 
+/**
+ * 外枠
+ */
 .outer_bounds {
     background-color: darkgray;
     height: $height;
@@ -77,7 +96,9 @@ export default {
     box-sizing: border-box;
     position: absolute;
 }
-
+/** 
+ * 内枠
+ */
 .inner_bounds {
     background-color: rgb(200, 200, 200);
     height: calc(#{ $height } - 10px);
@@ -85,5 +106,15 @@ export default {
     top: 3px;
     left: 3px;
     position: relative;
+}
+/** 
+ * めくれた後
+ */
+.back_bounds {
+    height: $height;
+    width: $width;
+    border: 2px solid black;
+    box-sizing: border-box;
+    position: absolute;
 }
 </style>
