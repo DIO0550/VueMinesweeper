@@ -3,7 +3,9 @@
         <template v-for="i in number_of_row">
             <Panel v-for="j in number_of_column" v-bind:key="number_of_column * (i - 1) + (j - 1)" 
                                 :row="(i - 1)" :column="(j - 1)" :bomb="is_bomb((i - 1), (j - 1))"
-                                :around_bomb_num="around_bomb_num((i - 1), (j - 1))"/>
+                                :around_bomb_num="around_bomb_num((i - 1), (j - 1))"
+                                :around_panel_open="around_panel_open"
+                                :ref="'Panels'"/>
         </template>
     </div>
 </template>
@@ -87,7 +89,7 @@ export default {
             return bomb_num;
         },
         /**
-         * 上下のボムの数を返す
+         * 上側のボムの数を返す
          * @param row 行
          * @param column 列
          * @returns ボムの数 
@@ -131,6 +133,12 @@ export default {
             console.log("END side_bomb_num");
             return bomb_num;
         },
+        /**
+         * 下側のボムの数を数える
+         * @param row 行
+         * @param column 列
+         * @return ボムの数
+         */
         bottom_bomb_num(row, column) {
             console.log("START bottom_bomb_num");
             var bomb_num = 0;
@@ -167,6 +175,75 @@ export default {
             }
             console.log("END is_out_of_bounds return = false");
             return false;
+        },
+
+        /**
+         * 周囲のパネルを開く
+         * @param row 行
+         * @param column 列
+         */
+        around_panel_open(row, column) {
+            console.log("START around_panel_open");
+            this.top_panel_open(row, column);
+            this.side_panel_open(row, column);
+            this.bottom_panel_open(row, column);
+            console.log("END around_panel_open");
+        },
+        /**
+         * 上側のパネルを開く
+         * @param row 行
+         * @param column 列
+         */
+        top_panel_open(row, column) {
+            console.log("START top_panel_open");
+            for (var i = 0; i < 3; i++) {
+                var check_row = row - 1;
+                var check_column = column + (i - 1);
+                // 範囲外
+                if (this.is_out_of_bounds(check_row, check_column)) {
+                    continue;
+                }
+                var index = check_row * this.number_of_column + check_column;
+                this.$refs['Panels'][index].click_panel();
+            }
+            console.log("END top_panel_open");
+        },
+        /**
+         * 左右のパネルを開く
+         * @param row 行
+         * @param column 列
+         */
+        side_panel_open(row, column) {
+            console.log("START side_panel_open");
+            for (var i = 0; i < 2; i++) {
+                var check_column = column + ((i * 2) - 1);
+                // 範囲外
+                if (this.is_out_of_bounds(row, check_column)) {
+                    continue;
+                }
+                var index = row * this.number_of_column + check_column;
+                this.$refs['Panels'][index].click_panel();
+            }
+            console.log("END side_panel_open");
+        },
+        /**
+         * 下側のパネルを開く
+         * @param row 行
+         * @param column 列
+         */
+        bottom_panel_open(row, column) {
+            console.log("START bottom_panel_open");
+            for (var i = 0; i < 3; i++) {
+                var check_row = row + 1;
+                var check_column = column + (i - 1);
+                // 範囲外
+                if (this.is_out_of_bounds(check_row, check_column)) {
+                    continue;
+                }
+                var index = check_row * this.number_of_column + check_column;
+                this.$refs['Panels'][index].click_panel();
+            }
+            console.log("END bottom_panel_open");
         }
     },
     created() {

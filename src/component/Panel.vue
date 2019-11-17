@@ -41,6 +41,12 @@ export default {
             type: Number,
             default: 0,
             required: true
+        },
+        // 自身の周りのパネルを開く
+        around_panel_open: {
+            name: "around_panel_open",
+            type: Function,
+            required: true
         }
     },
     methods: {
@@ -49,7 +55,23 @@ export default {
          */
         click_panel() {
             console.log("START click_panel");
+            // めくれているなら、何もしない
+            if (this.open) {
+                console.log("END click_panel");
+                return;
+            }
             this.open = true;
+            if (this.bomb) {
+                console.log("END click_panel");
+                return;
+            }
+            if (this.around_bomb_num != 0) {
+                console.log("END click_panel");
+                return;
+            }
+
+            // 周りにボムがなければ、ボムを再度開く
+            this.around_panel_open(this.row, this.column);
             console.log("END click_panel");
         },
         /**
@@ -61,8 +83,9 @@ export default {
                 console.log("END panel_text");
                 return "💣"
             }
+            const text = this.around_bomb_num == 0 ? "" : this.around_bomb_num;
             console.log("END panel_text");
-            return this.around_bomb_num;
+            return text;
         }
     },
     computed: {
@@ -83,7 +106,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../css/PanelStyle.scss";
+@import "../css/panel_style.scss";
 
 /**
  * 外枠
@@ -116,5 +139,8 @@ export default {
     border: 2px solid black;
     box-sizing: border-box;
     position: absolute;
+    font-size: $text_size;
+    text-align: center;
+    vertical-align: middle;
 }
 </style>
