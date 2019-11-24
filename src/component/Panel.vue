@@ -44,10 +44,15 @@ export default {
         },
         // 自身の周りのパネルを開く
         around_panel_open: {
-            name: "around_panel_open",
             type: Function,
+            name: "around_panel_open",
             required: true
-        }
+        },
+        did_opened_panel: {
+            type: Function,
+            name: "did_opened_panel",
+            required: true
+        },
     },
     methods: {
         /**
@@ -65,6 +70,7 @@ export default {
                 console.log("END click_panel");
                 return;
             }
+            this.did_opened_panel()
             if (this.around_bomb_num != 0) {
                 console.log("END click_panel");
                 return;
