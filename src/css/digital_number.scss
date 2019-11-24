@@ -1,0 +1,138 @@
+
+/**
+    参考：https://qiita.com/n4o847/items/30b0f542f155232bf4d1
+*/
+
+/** ON色 */
+$before_on_color: red;
+/** OFF色 */
+$before_off_color: rgb(99, 93, 93);
+/** 背景色 */
+$background_color: black;
+
+.display {
+    display: inline-block;
+    box-sizing: border-box;
+    position: relative;
+    width: 60px;
+    height: 100px;
+    border: solid 4px $background_color;
+    background-color: $background_color;
+    overflow: hidden;
+}
+.display::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 28px;
+    height: 28px;
+    -webkit-transform: translate(-50%, -50%) rotate(45deg);
+    -moz-transform: translate(-50%, -50%) rotate(45deg);
+    -ms-transform: translate(-50%, -50%) rotate(45deg);
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+.display::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 12px;
+    border-top: solid 30px $background_color;
+    border-bottom: solid 30px $background_color;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.d0::before {
+    background-color: $before_off_color;
+    box-shadow: -30px -30px $before_on_color,
+                0px -30px $before_on_color,
+                -30px   0px $before_on_color,
+                0px  30px $before_on_color,
+                30px   0px $before_on_color,
+                30px  30px $before_on_color;
+}
+.d1::before {
+    background-color: $before_off_color;
+    box-shadow: -30px -30px $before_off_color,
+                0px -30px $before_on_color,
+                -30px   0px $before_off_color,
+                0px  30px $before_off_color,
+                30px   0px $before_on_color,
+                30px  30px $before_off_color;
+}
+.d2::before {
+    background-color: $before_on_color;
+    box-shadow: -30px -30px $before_on_color,
+                0px -30px $before_on_color,
+                -30px   0px $before_off_color,
+                0px  30px $before_on_color,
+                30px   0px $before_off_color,
+                30px  30px $before_on_color;
+}
+.d3::before {
+    background-color: $before_on_color;
+    box-shadow: -30px -30px $before_on_color,
+                0px -30px $before_on_color,
+                -30px   0px $before_off_color,
+                0px  30px $before_off_color,
+                30px   0px $before_on_color,
+                30px  30px $before_on_color;
+}
+.d4::before {
+    background-color: $before_on_color;
+    box-shadow: -30px -30px $before_off_color,
+                0px -30px $before_on_color,
+                -30px   0px $before_on_color,
+                0px  30px $before_off_color,
+                30px   0px $before_on_color,
+                30px  30px $before_off_color;
+}
+.d5::before {
+    background-color: $before_on_color;
+    box-shadow: -30px -30px $before_on_color,
+                    0px -30px $before_off_color,
+                -30px   0px $before_on_color,
+                    0px  30px $before_off_color,
+                    30px   0px $before_on_color,
+                    30px  30px $before_on_color;
+}
+.d6::before {
+    background-color: $before_on_color;
+    box-shadow: -30px -30px $before_on_color,
+                0px -30px $before_off_color,
+                -30px   0px $before_on_color,
+                0px  30px $before_on_color,
+                30px   0px $before_on_color,
+                30px  30px $before_on_color;
+}
+.d7::before {
+    background-color: $before_off_color;
+    box-shadow: -30px -30px $before_on_color,
+                0px -30px $before_on_color,
+                -30px   0px $before_on_color,
+                0px  30px $before_off_color,
+                30px   0px $before_on_color,
+                30px  30px $before_off_color;
+}
+.d8::before {
+    background-color: $before_on_color;
+    box-shadow: -30px -30px $before_on_color,
+                0px -30px $before_on_color,
+                -30px   0px $before_on_color,
+                0px  30px $before_on_color,
+                30px   0px $before_on_color,
+                30px  30px $before_on_color;
+}
+.d9::before {
+    background-color: $before_on_color;
+    box-shadow: -30px -30px $before_on_color,
+                0px -30px $before_on_color,
+                -30px   0px $before_on_color,
+                0px  30px $before_off_color,
+                30px   0px $before_on_color,
+                30px  30px $before_on_color;
+}
