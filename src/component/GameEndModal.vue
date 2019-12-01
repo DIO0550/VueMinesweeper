@@ -1,8 +1,9 @@
 <template>
     <div class="modal_mask">
-        <div class="modal_message">
-            <button class="retry_button message_button">再挑戦</button>
-            <button class="back_title_button message_button">タイトルに戻る</button>
+        <div class="modal_message_panel">
+            <div class="modal_message">{{ message }}</div>
+            <button class="retry_button message_button" @click="re_challenge">再挑戦</button>
+            <button class="back_title_button message_button" @click="back_title">タイトルに戻る</button>
         </div>
     </div>
 </template>
@@ -30,6 +31,11 @@ export default {
                 name: "Title"
             })
             console.log("END back_start")
+        },
+        re_challenge() {
+            console.log("START re_challenge") 
+            this.$router.go({path: this.$router.currentRoute.path, force: true})
+            console.log("END re_challenge") 
         }
     }
 }
@@ -54,25 +60,56 @@ export default {
     justify-content: center;
 }
 
+
+$message_height: 100px;
+$message_width: 300px;
 /**
  * モーダルのメッセージ
  */
+.modal_message_panel {
+    position: relative;
+    background-color: white;
+    height: $message_height;
+    width: $message_width;
+}
+
 .modal_message {
-    color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    position: absolute;
 }
 
 /** ボタンの高さ */
 $button_height: 20px;
 /** ボタンの幅 */
-$button_width: 80px;
+$button_width: 120px;
+/** ボタンのBottom */
+$button_bottom: 10px;
+/** ボタンのRight */
+$buttom_right: 10px;
 
 /** メッセージ内のボタン */
 .message_button {
+    position: absolute;
     height: $button_height;
     width: $button_width;
 }
 
-.retry_button {
+.message_button:active {
+    color: white;
+}
 
+
+.retry_button {
+    bottom: $button_bottom; 
+    left: $buttom_right;
+}
+
+.back_title_button {
+    bottom: $button_bottom; 
+    right: $buttom_right; 
 }
 </style>

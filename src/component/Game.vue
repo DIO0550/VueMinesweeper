@@ -2,15 +2,16 @@
     <div class="game_bounds">
         <game_end_modal v-if="is_display_modal"/>
         <div class="info_block">
-        残り：<div class="display" v-bind:class="ten_place"></div><div class="display" v-bind:class="one_place"></div>
+            残り：<div class="display" v-bind:class="ten_place"></div><div class="display" v-bind:class="one_place"></div>
         </div>
-        <div class="panels" ref="panel_block" :style="{height: panels_height + 'px', width: panels_width + 'px', left: panel_left_mergin + 'px'}">
+        <div class="panels" ref="panel_block" :style="{height: panels_height + 'px', left: panel_left_mergin + 'px'}">
             <template v-for="i in number_of_row">
                 <panel v-for="j in number_of_column" v-bind:key="number_of_column * (i - 1) + (j - 1)" 
                                     :row="(i - 1)" :column="(j - 1)" :bomb="is_bomb((i - 1), (j - 1))"
                                     :around_bomb_num="around_bomb_num((i - 1), (j - 1))"
                                     :around_panel_open="around_panel_open"
                                     :did_opened_panel="did_open_panel"
+                                    :did_open_bomb="did_open_bomb"
                                     :ref="'Panels'"/>
             </template>
         </div>
@@ -37,9 +38,9 @@ export default {
     data() {
         return {
             // 行
-            number_of_row: panel_const.high_lebel.row,
+            number_of_row: panel_const.high_level.row,
             // 列
-            number_of_column: panel_const.high_lebel.column,
+            number_of_column: panel_const.high_level.column,
             // ボムの位置
             bombs: new Map(),
             // 開く必要があるパネルの数
@@ -48,8 +49,6 @@ export default {
             is_display_modal: false,
             // パネルとの左の幅
             panel_left_mergin: 0,
-            // パネルの幅
-            panels_width: 0,
             // パネルの高さ
             panels_height: 0,
 
@@ -65,7 +64,7 @@ export default {
          */
         create_bombs() {
             var panel_list = [];
-            var panel_num = panel_const.high_lebel.row * panel_const.high_lebel.column;
+            var panel_num = panel_const.high_level.row * panel_const.high_level.column;
             for (var i = 0;  i < panel_num; i++) {
                 panel_list.push(i)
             }
@@ -81,10 +80,10 @@ export default {
                 panel_list[j] = t;
             }
 
-            for (var k = 0; k < panel_const.high_lebel.bomb_count; k++) {
+            for (var k = 0; k < panel_const.high_level.bomb_count; k++) {
                 var number = panel_list[k]
-                var column = number % panel_const.high_lebel.column;
-                var row = Math.floor(number /  panel_const.high_lebel.column);
+                var column = number % panel_const.high_level.column;
+                var row = Math.floor(number /  panel_const.high_level.column);
                 console.log("column=" + column);
                 console.log("row =" + row);
                 this.bombs.set(number, {
@@ -286,16 +285,6 @@ export default {
             }
         },
         /**
-         * パネル全体の幅を返す
-         */
-        setup_bounds_width() {
-            console.log("START game_bounds_height")
-            var width = panel_const.panel_width * this.number_of_column + 100;
-            width = (width < window.innerWidth) ? window.innerWidth : width
-            this.panels_width = width;
-            console.log("END game_bounds_height");
-        },
-        /**
          * パネル全体の高さを返す
          */
         setup_bounds_height() {
@@ -308,17 +297,14 @@ export default {
          */
         setup_panel_left_mergin() {
             console.log("START panel_left_mergin");
-            var width = panel_const.panel_width * this.number_of_column + 100;
-            width = (width < window.innerWidth) ? window.innerWidth : width
-            this.panel_left_mergin = (width - (panel_const.panel_height * this.number_of_row)) / 2;
-            console.log("END panel_left_mergin");
+            this.panel_left_mergin = (this.$refs.panel_block.clientWidth - (panel_const.panel_height * this.number_of_row)) / 2;
+            console.log("END panel_left_mergin mergin = " + this.panel_left_mergin);
         },
         /**
          * サイズとポジションを調整する
          */
         setup_size_position() {
             this.setup_bounds_height();
-            this.setup_bounds_width();
             this.setup_panel_left_mergin();
         },
         /**
@@ -328,6 +314,14 @@ export default {
          */
         digital_number_class(number) {
             return "d" + number;
+        },
+        /**
+         * ボムが開いた際の処理
+         */
+        did_open_bomb() {
+            console.log("START did_open_bomb")
+            this.is_display_modal = true;
+            console.log("END did_open_bomb")
         }
     },
     /**
@@ -336,7 +330,7 @@ export default {
     created() {
         // ボム生成
         this.create_bombs();
-        this.need_open_panel = this.number_of_row * this.number_of_column - panel_const.high_lebel.bomb_count;
+        this.need_open_panel = this.number_of_row * this.number_of_column - panel_const.high_level.bomb_count;
     },
     computed: {
         /**
@@ -375,24 +369,21 @@ export default {
 @import "../css/digital_number.scss";
 
 .info_block {
-    display: flex;
-    box-sizing: border-box;
     background-color: white;
-    align-items: center;
+    width:100%;
+    position: relative;
+    display: flex;
     justify-content: center;
-
+    align-items: center;
 }
 
 .game_bounds {
-    top:0;
-    left:0;
     width:100%;
-    height:100%;
 }
 
 .panels {
-    top:0;
-    left:0;
+    top:10px;
+    width:100%;
     position: relative;
 }
 </style>

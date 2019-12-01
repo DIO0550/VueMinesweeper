@@ -53,6 +53,11 @@ export default {
             name: "did_opened_panel",
             required: true
         },
+        did_open_bomb: {
+            type: Function,
+            name: "did_open_bomb",
+            required: true
+        }
     },
     methods: {
         /**
@@ -67,6 +72,7 @@ export default {
             }
             this.open = true;
             if (this.bomb) {
+                this.did_open_bomb()
                 console.log("END click_panel");
                 return;
             }
