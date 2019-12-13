@@ -2,11 +2,12 @@
     <div class="modal_mask">
         <div class="modal_message_panel">
             <div class="modal_message">{{ message }}</div>
-            <button class="retry_button message_button" @click="re_challenge">再挑戦</button>
+            <button class="retry_button message_button" @click="retry">再挑戦</button>
             <button class="back_title_button message_button" @click="back_title">タイトルに戻る</button>
         </div>
     </div>
 </template>
+
 <script>
 export default {
     data() {
@@ -15,6 +16,7 @@ export default {
         }
     },
     props: {
+        /** メッセージ */
         message: {
             type: String,
             default: "ゲームクリア",
@@ -32,10 +34,13 @@ export default {
             })
             console.log("END back_start")
         },
-        re_challenge() {
-            console.log("START re_challenge") 
+        /**
+         * 再挑戦
+         */
+        retry() {
+            console.log("START retry") 
             this.$router.go({path: this.$router.currentRoute.path, force: true})
-            console.log("END re_challenge") 
+            console.log("END retry") 
         }
     }
 }
@@ -60,11 +65,10 @@ export default {
     justify-content: center;
 }
 
-
 $message_height: 100px;
 $message_width: 300px;
 /**
- * モーダルのメッセージ
+ * モーダルのメッセージ_パネル
  */
 .modal_message_panel {
     position: relative;
@@ -73,6 +77,7 @@ $message_width: 300px;
     width: $message_width;
 }
 
+/** メッセージ */
 .modal_message {
     top: 50%;
     left: 50%;
@@ -97,17 +102,17 @@ $buttom_right: 10px;
     height: $button_height;
     width: $button_width;
 }
-
 .message_button:active {
     color: white;
 }
 
-
+/** 再挑戦ボタン */
 .retry_button {
     bottom: $button_bottom; 
     left: $buttom_right;
 }
 
+/** タイトルに戻るボタン */
 .back_title_button {
     bottom: $button_bottom; 
     right: $buttom_right; 

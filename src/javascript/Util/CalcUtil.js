@@ -2,8 +2,8 @@
 /**
  * 計算系
  */
-var calc_util = {
-    number_place(target, place) {
+var CalcUtil = {
+    numberPlace(target, place) {
         if (place == 1) {
             return target % 10;
         }
@@ -22,4 +22,4 @@ var calc_util = {
     }
 };
 
-export default calc_util;
+export default CalcUtil;

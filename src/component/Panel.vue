@@ -1,5 +1,5 @@
 <template>
-    <div class="outer_bounds" v-on:click="click_panel" v-if="this.open != true" :style="{top: pos_y + 'px', left: pos_x + 'px'}">
+    <div class="outer_bounds" v-on:click="clickPanel" v-if="this.open != true" :style="{top: pos_y + 'px', left: pos_x + 'px'}">
         <div class="inner_bounds">
         </div>
     </div>
@@ -9,7 +9,8 @@
 </template>
 
 <script>
-import PanelConst from "../javascript/Const/panel_const"
+
+import panel_const from "../javascript/Const/PanelConst"
 export default {
     data() {
         return {
@@ -37,25 +38,27 @@ export default {
             required: true
         },
         // 周りのボムの数
-        around_bomb_num: {
+        aroundBombNum: {
             type: Number,
             default: 0,
             required: true
         },
         // 自身の周りのパネルを開く
-        around_panel_open: {
+        aroundPanelOpen: {
             type: Function,
-            name: "around_panel_open",
+            name: "aroundPanelOpen",
             required: true
         },
-        did_opened_panel: {
+        // パネルをめくった際の処理
+        didOpenedPanel: {
             type: Function,
-            name: "did_opened_panel",
+            name: "didOpenedPanel",
             required: true
         },
-        did_open_bomb: {
+        // ボムをめくった際の処理
+        didOpenBomb: {
             type: Function,
-            name: "did_open_bomb",
+            name: "didOpenBomb",
             required: true
         }
     },
@@ -63,28 +66,28 @@ export default {
         /**
          * パネル押下時の動作
          */
-        click_panel() {
-            console.log("START click_panel");
+        clickPanel() {
+            console.log("START clickPanel");
             // めくれているなら、何もしない
             if (this.open) {
-                console.log("END click_panel");
+                console.log("END clickPanel");
                 return;
             }
             this.open = true;
             if (this.bomb) {
-                this.did_open_bomb()
-                console.log("END click_panel");
+                this.didOpenBomb()
+                console.log("END clickPanel");
                 return;
             }
-            this.did_opened_panel()
-            if (this.around_bomb_num != 0) {
-                console.log("END click_panel");
+            this.didOpenedPanel()
+            if (this.aroundBombNum != 0) {
+                console.log("END clickPanel");
                 return;
             }
 
             // 周りにボムがなければ、ボムを再度開く
-            this.around_panel_open(this.row, this.column);
-            console.log("END click_panel");
+            this.aroundPanelOpen(this.row, this.column);
+            console.log("END clickPanel");
         },
         /**
          * パネルに表示する文字
@@ -95,23 +98,23 @@ export default {
                 console.log("END panel_text");
                 return "💣"
             }
-            const text = this.around_bomb_num == 0 ? "" : this.around_bomb_num;
+            const text = this.aroundBombNum == 0 ? "" : this.aroundBombNum;
             console.log("END panel_text");
             return text;
-        }
+        },
     },
     computed: {
         /**
          * X座標
          */
         pos_x() {
-            return this.column * PanelConst.panel_width;
+            return this.column * panel_const.panel_width;
         },
         /**
          * Y座標
          */
         pos_y() {
-            return this.row * PanelConst.panel_height;
+            return this.row * panel_const.panel_height;
         }
     }
 }
