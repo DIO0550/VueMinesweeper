@@ -388,7 +388,6 @@ export default {
 @import "../css/digital_number.scss";
 
 .info_block {
-    background-color: white;
     width:100%;
     position: relative;
     display: flex;

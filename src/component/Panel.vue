@@ -1,6 +1,7 @@
 <template>
-    <div class="outer_bounds" v-on:click="clickPanel" v-if="this.open != true" :style="{top: pos_y + 'px', left: pos_x + 'px'}">
+    <div class="outer_bounds" v-on:click="clickPanel" @click.right.prevent="panelRightClick" v-if="open != true" :style="{top: pos_y + 'px', left: pos_x + 'px'}">
         <div class="inner_bounds">
+            <label v-if="isMark == true">◆</label>
         </div>
     </div>
     <div class="back_bounds" v-else :style="{top: pos_y + 'px', left: pos_x + 'px'}">
@@ -16,6 +17,8 @@ export default {
         return {
             // めくれているか 
             open: false,
+            // マークをつけているか
+            isMark: false
         }
     },
     props: {
@@ -89,6 +92,11 @@ export default {
             this.aroundPanelOpen(this.row, this.column);
             console.log("END clickPanel");
         },
+        panelRightClick() {
+            console.log("START panelRightClick")
+            this.isMark = !this.isMark
+            console.log("END panelRightClick")  
+        },
         /**
          * パネルに表示する文字
          */
@@ -133,6 +141,10 @@ export default {
     border: 2px solid black;
     box-sizing: border-box;
     position: absolute;
+    user-select: none;
+    text-align: center;
+    vertical-align: middle;
+    font-size: $text_size;
 }
 /** 
  * 内枠
@@ -144,6 +156,7 @@ export default {
     top: 3px;
     left: 3px;
     position: relative;
+    user-select: none;
 }
 /** 
  * めくれた後

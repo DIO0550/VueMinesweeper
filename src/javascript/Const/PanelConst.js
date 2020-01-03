@@ -10,7 +10,7 @@ const panel_const = {
         row: 5,
         bomb_count: 5,
     },
-    high_level: {
+    hard_level: {
         column: 10,
         row: 10,
         bomb_count: 25,
