@@ -36,7 +36,7 @@
       </div>
       </div>
         <div class="start_button_wrapper">
-        <button class="start_button custom_button" v-on:click="hardButtonClick">CUSTOM</button>
+        <button class="start_button custom_button" v-on:click="customButtonClick" :disabled="!isEnableCustomButton" v-bind:class="{ custom_button_disable : !isEnableCustomButton }">CUSTOM</button>
       </div>
     </div>
   </div>
@@ -56,6 +56,9 @@ export default {
     };
   },
   methods: {
+    /**
+     * [EASY]ボタンの押下時の動作
+     */
     easyButtonClick() {
       console.log("START easyButtonClick");
 
@@ -65,7 +68,7 @@ export default {
       console.log("END easyButtonClick");
     },
     /**
-     * [normal]ボタンの押下時の
+     * [NORMAL]ボタンの押下時の動作
      */
     normalButtonClick() {
       console.log("START normalButtonClick");
@@ -76,7 +79,7 @@ export default {
       console.log("END normalButtonClick");
     },
     /**
-     * [hard]ボタンの押下時の動作
+     * [HARD]ボタンの押下時の動作
      */
     hardButtonClick() {
       console.log("START hardButtonClick");
@@ -86,7 +89,22 @@ export default {
 
       console.log("END hardButtonClick");
     },
+    /**
+     * [CUSTOM]ボタンの押下時の動作
+     */
+    customButtonClick() {
+      console.log("START customButtonClick")
+      let info = {
+        column: Number(this.input_column),
+        row: Number(this.input_row),
+        bomb_count: Number(this.input_bomb),
+      }
+      this.setPanelInfo(info);
+      this.pushGameScene();
+      console.log("END customButtonClick")
+    },
     setPanelInfo(info) {
+      console.log("bomb info = " + info);
       this.setPanelInfoColumn(info.column);
       this.setPanelInfoRow(info.row);
       this.setPanelInfoBombCount(info.bomb_count);
@@ -98,6 +116,7 @@ export default {
       });
       console.log("END pushGameScene");
     },
+    
     ...mapActions("panel_info_store", {
       setPanelInfoColumn(dispatch, column) {
         dispatch("setColumn", column);
@@ -109,6 +128,33 @@ export default {
         dispatch("setBombCount", bomb_count);
       }
     })
+  },
+  computed: {
+    isEnableCustomButton() {
+      let column_number = Number(this.input_column);
+      if (isNaN(column_number)) {
+        return false;
+      }
+
+      let row_number = Number(this.input_row);
+      if (isNaN(row_number)) {
+        return false;
+      }
+
+      let bomb_number = Number(this.input_bomb);
+      if (isNaN(bomb_number)) {
+        return false;
+      }
+
+      if (bomb_number == 0) {
+        return false
+      }
+
+      if (column_number * row_number <= bomb_number) {
+        return false
+      }
+      return true;
+    },
   }
 };
 </script>
@@ -118,6 +164,7 @@ $easy_button_color: rgb(117, 216, 255);
 $normal_button_color: rgb(253, 253, 117);
 $hard_button_color: rgb(243, 69, 69);
 $custom_button_color: rgb(41, 119, 25);
+$button_disable_color: rgb(200, 200, 200);
 /**.
 スタートボタン
  */
@@ -163,7 +210,6 @@ $custom_button_color: rgb(41, 119, 25);
   background-color: $hard_button_color;
 }
 
-
 .custom_button {
   color: $custom_button_color;
   border-color: $custom_button_color;
@@ -172,6 +218,15 @@ $custom_button_color: rgb(41, 119, 25);
 .custom_button:hover {
   color: white;
   background-color: $custom_button_color;
+}
+.custom_button_disable {
+  color: $button_disable_color;
+  border-color: $button_disable_color;
+}
+.custom_button_disable:hover {
+  color: $button_disable_color;
+  border-color: $button_disable_color;
+   background-color: white;
 }
 
 /**
