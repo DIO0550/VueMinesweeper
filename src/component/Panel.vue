@@ -170,5 +170,6 @@ export default {
     font-size: $text_size;
     text-align: center;
     vertical-align: middle;
+    background-color: white;
 }
 </style>
