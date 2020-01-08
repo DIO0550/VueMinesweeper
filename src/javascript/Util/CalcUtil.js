@@ -19,6 +19,16 @@ var CalcUtil = {
         result = Math.floor(result / (divide_value / 10));
 
         return result;
+    },
+    /**
+     * 現在時刻との差分を文字列で返す
+     * @param time 開始時間
+     */
+    diffTime(time) {
+        let now = new Date()
+        let diff = now.getTime() - time.getTime()
+
+        return diff;
     }
 };
 

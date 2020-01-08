@@ -1,10 +1,25 @@
 <template>
     <div class="game_bounds">
         <game_end_modal v-if="is_display_modal"/>
-        <div class="info_block">
-            残り：<div class="display" v-bind:class="tenPlace"></div><div class="display" v-bind:class="onePlace"></div>
+        <div>
+            <div class="info_block">
+                <!--
+                残り：<div class="display" v-bind:class="tenPlace"></div><div class="display" v-bind:class="onePlace"></div>
+                -->
+                <div class="info_block_label">残り</div>
+                <div>{{ need_open_panel }}</div>
+            </div>
+            <div class="info_block">
+                <div class="info_block_label">BOMB</div>
+                <div>{{ bomb_num }}</div>
+            </div>
+            <div class="info_block">
+                <div class="info_block_label">TIME</div>
+                <div>{{ game_time }}</div>
+            </div>
+
         </div>
-        <div class="panels" ref="panel_block" :style="{height: panels_height + 'px', left: panel_left_mergin + 'px'}">
+        <div class="panels" ref="panel_block" :style="{height: panels_height + 'px', width: panels_width + 'px'}">
             <template v-for="i in number_of_row">
                 <panel v-for="j in number_of_column" v-bind:key="number_of_column * (i - 1) + (j - 1)" 
                                     :row="(i - 1)" :column="(j - 1)" :bomb="isBomb((i - 1), (j - 1))"
@@ -53,7 +68,13 @@ export default {
             // パネルとの左の幅
             panel_left_mergin: 0,
             // パネルの高さ
-            panels_height: 0
+            panels_height: 0,
+            // パネルの幅
+            panels_width: 0,
+            // タイム
+            game_time: "",
+            // 開始時間
+            start_time: null,
         }
     },
     components: {
@@ -286,10 +307,13 @@ export default {
             if (this.need_open_panel == 0) {
                 this.is_display_modal = true;
             }
+            if (this.start_time == null) {
+                this.start_time = new Date()
+            } 
             console.log("END didOpenPanel");
         },
         /**
-         * パネル全体の高さを返す
+         * パネル全体の高さを設定する
          */
         setupBoundsHeight() {
             console.log("START setupBoundsHeight");
@@ -297,12 +321,12 @@ export default {
             console.log("END setupBoundsHeight");
         },
         /**
-         * パネル全体の左側の幅
+         * パネル全体の幅を設定する
          */
-        setupPanelLeftMergin() {
-            console.log("START panel_left_mergin");
-            this.panel_left_mergin = (this.$refs.panel_block.clientWidth - (panel_const.panel_height * this.number_of_row)) / 2;
-            console.log("END panel_left_mergin mergin = " + this.panel_left_mergin);
+        setupBoundsWidth() {
+            console.log("START setupBoundsWidth");
+            this.panels_width = panel_const.panel_width * this.number_of_column;
+            console.log("END setupBoundsWidth")
         },
         /**
          * サイズとポジションを調整する
@@ -310,7 +334,7 @@ export default {
         setupSizePosition() {
             console.log("START setupSizePosition");
             this.setupBoundsHeight();
-            this.setupPanelLeftMergin();
+            this.setupBoundsWidth();
             console.log("END setupSizePosition");
         },
         /**
@@ -356,11 +380,6 @@ export default {
             var value = calc_util.numberPlace(this.need_open_panel, 1);
             return this.digitalNumberClass(value);
         },
-        // ...mapState("panel_info_store", {
-        //     number_of_column: state => state.column,
-        //     number_of_row: state => state.row,
-        //     bomb_num: state => state.bomb_num
-        // }),
         ...mapGetters("panel_info_store", {
             column: "column",
             row: "row",
@@ -388,21 +407,35 @@ export default {
 @import "../css/digital_number.scss";
 
 .info_block {
-    width:100%;
-    position: relative;
-    display: flex;
     justify-content: center;
     align-items: center;
+    font-family: "ヒラギノ丸ゴ Pro W4", "ヒラギノ丸ゴ Pro",
+    "Hiragino Maru Gothic Pro", "ヒラギノ角ゴ Pro W3",
+    "Hiragino Kaku Gothic Pro", "HG丸ｺﾞｼｯｸM-PRO", "HGMaruGothicMPRO";
+    font-size: 40px;
+    width: 400px;
+    display: inline-flex;
+    flex-wrap: wrap;
+}
+
+.info_block_label {
+    background-color: orange;
+    border-radius: 10px;
+    color: white;
+    width: 400px;
 }
 
 .game_bounds {
-    width:100%;
+    //width:100%;
+    border: 10px solid orangered;
+    text-align: center;
 }
 
 .panels {
     top:10px;
-    width:100%;
+    //width:100%;
     position: relative;
+    display: inline-flex;
 }
 </style>
 
