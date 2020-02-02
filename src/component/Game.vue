@@ -1,11 +1,9 @@
 <template>
     <div class="game_bounds">
-        <game_end_modal v-if="is_display_modal"/>
+        <game_end_modal v-if="is_game_clear" :message="'ゲームクリア'"/>
+        <game_end_modal v-if="is_game_over" :message="'ゲームオーバー'"/>
         <div>
             <div class="info_block">
-                <!--
-                残り：<div class="display" v-bind:class="tenPlace"></div><div class="display" v-bind:class="onePlace"></div>
-                -->
                 <div class="info_block_label">残り</div>
                 <div>{{ need_open_panel }}</div>
             </div>
@@ -63,8 +61,10 @@ export default {
             bombs: new Map(),
             // 開く必要があるパネルの数
             need_open_panel: Math.max,
-            // モーダルメッセージを表示するか
-            is_display_modal: false,
+            // ゲームクリアしたか
+            is_game_clear: false,
+            // ゲームオーバーか
+            is_game_over: false,
             // パネルとの左の幅
             panel_left_mergin: 0,
             // パネルの高さ
@@ -305,7 +305,7 @@ export default {
             console.log("START didOpenPanel");
             this.need_open_panel--;
             if (this.need_open_panel == 0) {
-                this.is_display_modal = true;
+                this.is_game_clear = true;
             }
             if (this.start_time == null) {
                 this.start_time = new Date()
@@ -350,7 +350,7 @@ export default {
          */
         didOpenBomb() {
             console.log("START didOpenBomb")
-            this.is_display_modal = true;
+            this.is_game_over = true;
             console.log("END didOpenBomb")
         },
     },
@@ -404,7 +404,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../css/digital_number.scss";
 
 .info_block {
     justify-content: center;
@@ -426,14 +425,11 @@ export default {
 }
 
 .game_bounds {
-    //width:100%;
-    border: 10px solid orangered;
     text-align: center;
 }
 
 .panels {
     top:10px;
-    //width:100%;
     position: relative;
     display: inline-flex;
 }

@@ -19,7 +19,7 @@ export default {
         /** メッセージ */
         message: {
             type: String,
-            default: "ゲームクリア",
+            default: "",
             required: true
         }
     },
