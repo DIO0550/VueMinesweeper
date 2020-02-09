@@ -1,7 +1,7 @@
 <template>
     <div class="game_bounds">
-        <game_end_modal v-if="is_game_clear" :message="'ゲームクリア'"/>
-        <game_end_modal v-if="is_game_over" :message="'ゲームオーバー'"/>
+        <GameEndModal v-if="is_game_clear" :message="'ゲームクリア'"/>
+        <GameEndModal v-if="is_game_over" :message="'ゲームオーバー'"/>
         <div>
             <div class="info_block">
                 <div class="info_block_label">残り</div>
@@ -19,7 +19,7 @@
         </div>
         <div class="panels" ref="panel_block" :style="{height: panels_height + 'px', width: panels_width + 'px'}">
             <template v-for="i in number_of_row">
-                <panel v-for="j in number_of_column" v-bind:key="number_of_column * (i - 1) + (j - 1)" 
+                <Panel v-for="j in number_of_column" v-bind:key="number_of_column * (i - 1) + (j - 1)" 
                                     :row="(i - 1)" :column="(j - 1)" :bomb="isBomb((i - 1), (j - 1))"
                                     :aroundBombNum="aroundBombNum((i - 1), (j - 1))"
                                     :aroundPanelOpen="aroundPanelOpen"
@@ -35,12 +35,12 @@
 /**
  * １マスパネル用
  */
-import panel from './Panel';
+import Panel from './Panel';
 
 /**
  * ゲーム終了時のモーダル
  */
-import game_end_modal from './GameEndModal';
+import GameEndModal from './GameEndModal';
 
 import panel_const from "../javascript/Const/PanelConst"
 import calc_util from '../javascript/Util/CalcUtil';
@@ -78,8 +78,8 @@ export default {
         }
     },
     components: {
-        panel,
-        game_end_modal
+        Panel,
+        GameEndModal
     },
     methods: {
         /**
