@@ -60,20 +60,6 @@ export default {
 
       console.log("END hardButtonClick");
     },
-    /**
-     * [CUSTOM]ボタンの押下時の動作
-     */
-    customButtonClick() {
-      console.log("START customButtonClick")
-      let info = {
-        column: Number(this.input_column),
-        row: Number(this.input_row),
-        bomb_count: Number(this.input_bomb),
-      }
-      this.setPanelInfo(info);
-      this.pushGameScene();
-      console.log("END customButtonClick")
-    },
     setPanelInfo(info) {
       console.log("bomb info = " + info);
       this.setPanelInfoColumn(info.column);
@@ -99,33 +85,6 @@ export default {
         dispatch("setBombCount", bomb_count);
       }
     })
-  },
-  computed: {
-    isEnableCustomButton() {
-      let column_number = Number(this.input_column);
-      if (isNaN(column_number)) {
-        return false;
-      }
-
-      let row_number = Number(this.input_row);
-      if (isNaN(row_number)) {
-        return false;
-      }
-
-      let bomb_number = Number(this.input_bomb);
-      if (isNaN(bomb_number)) {
-        return false;
-      }
-
-      if (bomb_number == 0) {
-        return false
-      }
-
-      if (column_number * row_number <= bomb_number) {
-        return false
-      }
-      return true;
-    },
   }
 };
 </script>
