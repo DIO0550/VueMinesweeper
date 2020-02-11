@@ -1,7 +1,6 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import Component from '@/component/Game.vue';
-import Vue from 'vue';
 
 const localVue = createLocalVue()
 localVue.use(Vuex)
@@ -24,13 +23,11 @@ describe('Component', () => {
         setBombCount: jest.fn(),
         bombCount: jest.fn()
     }
-    //Vuexストアのモックを作成する
     panelInfoStoreMock = {
       namespaced: true,
       actions,
       getters
     }
-
     store = new Vuex.Store({
       modules: {
         panel_info_store: panelInfoStoreMock
