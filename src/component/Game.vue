@@ -9,7 +9,7 @@
             </div>
             <div class="info_block">
                 <div class="info_block_label">BOMB</div>
-                <div>{{ bomb_num }}</div>
+                <div>{{ bombCount }}</div>
             </div>
             <div class="info_block">
                 <div class="info_block_label">TIME</div>
@@ -18,8 +18,8 @@
 
         </div>
         <div class="panels" ref="panel_block" :style="{height: panels_height + 'px', width: panels_width + 'px'}">
-            <template v-for="i in number_of_row">
-                <Panel v-for="j in number_of_column" v-bind:key="number_of_column * (i - 1) + (j - 1)" 
+            <template v-for="i in row">
+                <Panel v-for="j in column" v-bind:key="column * (i - 1) + (j - 1)" 
                                     :row="(i - 1)" :column="(j - 1)" :bomb="isBomb((i - 1), (j - 1))"
                                     :aroundBombNum="aroundBombNum((i - 1), (j - 1))"
                                     :aroundPanelOpen="aroundPanelOpen"
@@ -51,12 +51,6 @@ const top_mergin = 100;
 export default {
     data() {
         return {
-            // 行
-            number_of_row: 0,
-            // 列
-            number_of_column: 0,
-            // ボムのカウント
-            bomb_num: 0,
             // ボムの位置
             bombs: new Map(),
             // 開く必要があるパネルの数
@@ -87,7 +81,7 @@ export default {
          */
         createBombs() {
             var panel_list = [];
-            var panel_num = this.number_of_row * this.number_of_column;
+            var panel_num = this.row * this.column;
             for (var i = 0;  i < panel_num; i++) {
                 panel_list.push(i)
             }
@@ -103,10 +97,10 @@ export default {
                 panel_list[j] = t;
             }
 
-            for (var k = 0; k < this.bomb_num; k++) {
+            for (var k = 0; k < this.bombCount; k++) {
                 var number = panel_list[k]
-                var column = number % this.number_of_column;
-                var row = Math.floor(number /  this.number_of_column);
+                var column = number % this.column;
+                var row = Math.floor(number /  this.column);
                 console.log("column=" + column);
                 console.log("row =" + row);
                 this.bombs.set(number, {
@@ -123,7 +117,7 @@ export default {
          */
         isBomb(row, column) {
             console.log("START isBomb")
-            var has_bomb = this.bombs.has(column + row * this.number_of_column)
+            var has_bomb = this.bombs.has(column + row * this.column)
             console.log("END isBomb false")
             return has_bomb;
         },
@@ -135,11 +129,11 @@ export default {
          */
         aroundBombNum(row, column) {
             console.log("START aroundBombNum");
-            var bomb_num = this.topBombNum(row, column);
-            bomb_num += this.sideBombNum(row, column);
-            bomb_num += this.bottomBombNum(row, column);
-            console.log("END aroundBombNum bomb_num =" + bomb_num);
-            return bomb_num;
+            var bombCount = this.topBombNum(row, column);
+            bombCount += this.sideBombNum(row, column);
+            bombCount += this.bottomBombNum(row, column);
+            console.log("END aroundBombNum bombCount =" + bombCount);
+            return bombCount;
         },
         /**
          * 上側のボムの数を返す
@@ -149,7 +143,7 @@ export default {
          */
         topBombNum(row, column) {
             console.log("START aroundBombNum");
-            var bomb_num = 0;
+            var bombCount = 0;
             for (var i = 0; i < 3; i++) {
                 var check_row = row - 1;
                 var check_column = column + (i - 1);
@@ -158,11 +152,11 @@ export default {
                     continue;
                 }
                 if (this.isBomb(check_row, check_column)) {
-                    bomb_num++;
+                    bombCount++;
                 }
             }
             console.log("END aroundBombNum");
-            return bomb_num;
+            return bombCount;
         },
         /**
          * 左右のボムの数を返す
@@ -172,7 +166,7 @@ export default {
          */
         sideBombNum(row, column) {
             console.log("START sideBombNum");
-            var bomb_num = 0;
+            var bombCount = 0;
             for (var i = 0; i < 2; i++) {
                 var check_column = column + ((i * 2) - 1);
                 // 範囲外
@@ -180,11 +174,11 @@ export default {
                     continue;
                 }
                 if (this.isBomb(row, check_column)) {
-                    bomb_num++;
+                    bombCount++;
                 }
             }
             console.log("END sideBombNum");
-            return bomb_num;
+            return bombCount;
         },
         /**
          * 下側のボムの数を数える
@@ -194,7 +188,7 @@ export default {
          */
         bottomBombNum(row, column) {
             console.log("START bottomBombNum");
-            var bomb_num = 0;
+            var bombCount = 0;
             for (var i = 0; i < 3; i++) {
                 var check_row = row + 1;
                 var check_column = column + (i - 1);
@@ -203,11 +197,11 @@ export default {
                     continue;
                 }
                 if (this.isBomb(check_row, check_column)) {
-                    bomb_num++;
+                    bombCount++;
                 }
             }
             console.log("END bottomBombNum");
-            return bomb_num;
+            return bombCount;
         },
         /**
          * 引数で受け取った行と列が範囲外か返す
@@ -222,7 +216,7 @@ export default {
                 return true;
             }
 
-            if (row > (this.number_of_row - 1) || column > (this.number_of_column - 1)) {
+            if (row > (this.row - 1) || column > (this.column - 1)) {
                 console.log("END isOutOfBounds return = true");
                 return true;
             }
@@ -256,7 +250,7 @@ export default {
                 if (this.isOutOfBounds(check_row, check_column)) {
                     continue;
                 }
-                var index = check_row * this.number_of_column + check_column;
+                var index = check_row * this.column + check_column;
                 this.$refs['Panels'][index].clickPanel();
             }
             console.log("END topPanelOpen");
@@ -274,7 +268,7 @@ export default {
                 if (this.isOutOfBounds(row, check_column)) {
                     continue;
                 }
-                var index = row * this.number_of_column + check_column;
+                var index = row * this.column + check_column;
                 this.$refs['Panels'][index].clickPanel();
             }
             console.log("END sidePanelOpen");
@@ -293,7 +287,7 @@ export default {
                 if (this.isOutOfBounds(check_row, check_column)) {
                     continue;
                 }
-                var index = check_row * this.number_of_column + check_column;
+                var index = check_row * this.column + check_column;
                 this.$refs['Panels'][index].clickPanel();
             }
             console.log("END bottompanelopen");
@@ -317,7 +311,7 @@ export default {
          */
         setupBoundsHeight() {
             console.log("START setupBoundsHeight");
-            this.panels_height = panel_const.panel_height * this.number_of_row + 100;
+            this.panels_height = panel_const.panel_height * this.row + 100;
             console.log("END setupBoundsHeight");
         },
         /**
@@ -325,7 +319,7 @@ export default {
          */
         setupBoundsWidth() {
             console.log("START setupBoundsWidth");
-            this.panels_width = panel_const.panel_width * this.number_of_column;
+            this.panels_width = panel_const.panel_width * this.column;
             console.log("END setupBoundsWidth")
         },
         /**
@@ -336,14 +330,6 @@ export default {
             this.setupBoundsHeight();
             this.setupBoundsWidth();
             console.log("END setupSizePosition");
-        },
-        /**
-         * 引数で受け取った数字から、デジタル数字用のクラスを返す
-         * @param 表示する数字
-         * @return デジタル数字用のクラス名
-         */
-        digitalNumberClass(number) {
-            return "d" + number;
         },
         /**
          * ボムが開いた際の処理
@@ -358,32 +344,15 @@ export default {
      * インスタンス初期化後
      */
     created() {
-        this.number_of_column = this.column;
-        this.number_of_row = this.row;
-        this.bomb_num = this.bombcount;
         // ボム生成
         this.createBombs();
-        this.need_open_panel = this.number_of_row * this.number_of_column - this.bomb_num;
+        this.need_open_panel = this.row * this.column - this.bombCount;
     },
     computed: {
-        /**
-         * 10の位用クラスを返す
-         */
-        tenPlace() {
-            var value = calc_util.numberPlace(this.need_open_panel, 2);
-            return this.digitalNumberClass(value);
-        },
-        /**
-         * 1の位用クラスを返す
-         */
-        onePlace() {
-            var value = calc_util.numberPlace(this.need_open_panel, 1);
-            return this.digitalNumberClass(value);
-        },
         ...mapGetters("panel_info_store", {
             column: "column",
             row: "row",
-            bombcount: "bombCount"
+            bombCount: "bombCount"
         }),
     },
     /**
