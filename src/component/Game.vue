@@ -43,7 +43,8 @@ import Panel from './Panel';
 import GameEndModal from './GameEndModal';
 
 import panel_const from "../javascript/Const/PanelConst"
-import calc_util from '../javascript/Util/CalcUtil';
+import {timer, TIMER_FORMAT} from "../javascript/Util/Timer"
+
 import { mapState, mapGetters} from "vuex"
 
 const left_mergin = 100;
@@ -66,9 +67,11 @@ export default {
             // パネルの幅
             panels_width: 0,
             // タイム
-            game_time: "",
+            game_time: "00:00:00",
             // 開始時間
             start_time: null,
+            // タイマー
+            game_timer: null
         }
     },
     components: {
@@ -296,14 +299,13 @@ export default {
          * パネルが開かれた後の処理
          */
         didOpenPanel() {
+            this.startTimer()
             console.log("START didOpenPanel");
             this.need_open_panel--;
             if (this.need_open_panel == 0) {
+                this.stopTimer()
                 this.is_game_clear = true;
             }
-            if (this.start_time == null) {
-                this.start_time = new Date()
-            } 
             console.log("END didOpenPanel");
         },
         /**
@@ -335,10 +337,25 @@ export default {
          * ボムが開いた際の処理
          */
         didOpenBomb() {
+            this.stopTimer()
             console.log("START didOpenBomb")
             this.is_game_over = true;
             console.log("END didOpenBomb")
         },
+        startTimer() {
+            if (this.game_timer != null) {
+                return
+            }
+            this.start_time = new Date()
+            this.game_timer = setInterval(function() {this.game_time = timer.diffTimeString(this.start_time, TIMER_FORMAT.HOUR)}.bind(this), 1000)
+        },
+        stopTimer() {
+            if (this.game_timer == null) {
+                return
+            }
+            clearInterval(this.game_timer)
+            this.game_timer = null
+        }
     },
     /**
      * インスタンス初期化後
