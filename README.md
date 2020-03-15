@@ -1,2 +1,1 @@
-# VueMinesweeper
-VueJsでマインスイーパー
+Vue Minesweeper
