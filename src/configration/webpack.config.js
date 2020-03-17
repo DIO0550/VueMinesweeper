@@ -60,6 +60,11 @@ module.exports = {
       {
         test: /\.html$/,
         loader: "html-loader"
+      },
+      {
+        test: /\.(ogg|mp3|wav|mpe?g)$/i,
+        use: 'file-loader',
+        exclude: /(node_modules)/
       }
     ]
   },
